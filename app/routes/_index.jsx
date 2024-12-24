@@ -1,3 +1,4 @@
+import Top from "./top";
 export const meta = () => {
   return [
     { title: "New Remix SPA" },
@@ -24,6 +25,7 @@ export default function Index() {
             Remix Docs
           </a>
         </li>
+        <Top />
       </ul>
     </div>
   );
