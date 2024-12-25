@@ -1,9 +1,9 @@
-import { Link } from "@remix-run/react";
+import { useNavigate } from "@remix-run/react";
 import { useState } from "react";
 
-<Link to="/rooms">部屋一覧</Link>;
 export default function Top() {
   const [name, setName] = useState("");
+  const navigate = useNavigate();
   return (
     <main>
       <h1>名前を入力↓</h1>
@@ -11,10 +11,19 @@ export default function Top() {
         <input value={name} onChange={(e) => setName(e.target.value)} />
       </div>
       <div>
-        <button onClick={() => localStorage.setItem("name", name)}>
+        <button
+          onClick={() => {
+            localStorage.setItem("name", name), navigate("/rooms");
+            //console.log(nameContainer());
+          }}
+        >
           ログイン
         </button>
       </div>
     </main>
   );
+}
+
+export function nameContainer() {
+  return localStorage.getItem("name");
 }
