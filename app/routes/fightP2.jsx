@@ -10,7 +10,8 @@ export default function Fightpage() {
   //今後プレイヤーの情報は１つの配列にまとめる
   const [currentAttackCard, setCurrentAttackCard] = useState(0);
   const [currentDefenceCard, setCurrentDefenceCard] = useState(0);
-  async function calculateDamage() {
+
+  function calculateDamage() {
     console.log("現在の攻撃カード:", currentAttackCard);
     console.log("現在の防御カード:", currentDefenceCard);
 
@@ -19,22 +20,15 @@ export default function Fightpage() {
       currentAttackCard - currentDefenceCard
     );
     console.log("計算されたダメージ:", calculatedDamage);
-    const calculateNewHP = async (currentHP, damage) => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(Math.max(0, currentHP - damage));
-        }, 1000);
-      });
-    };
 
     if (nowPlayer) {
       console.log("プレイヤー1が攻撃中");
-      const newHP = await calculateNewHP(player2HP, calculatedDamage);
+      const newHP = Math.max(0, player2HP - calculatedDamage);
       console.log("プレイヤー2の新しいHP:", newHP);
       setPlayer2HP(newHP);
     } else {
       console.log("プレイヤー2が攻撃中");
-      const newHP = await calculateNewHP(player1HP, calculatedDamage);
+      const newHP = Math.max(0, player1HP - calculatedDamage);
       console.log("プレイヤー1の新しいHP:", newHP);
       setPlayer1HP(newHP);
     }
@@ -42,6 +36,7 @@ export default function Fightpage() {
     setNowPlayer((prev) => !prev);
     setNowTurn((prev) => prev + 1);
   }
+
   return (
     <>
       <header>
