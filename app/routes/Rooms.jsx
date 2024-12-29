@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "@remix-run/react";
-import { name } from "./top.jsx";
 import { db } from "../firebase.js";
 import {
   collection,
@@ -12,17 +11,19 @@ import {
 } from "firebase/firestore";
 
 function Rooms() {
+  const [name, setName] = useState(JSON.parse(localStorage.nameContainer));
   const [value1, setValue1] = useState("");
   const [value2, setValue2] = useState("");
   const [passes, setPasses] = useState([]);
   const navigate = useNavigate();
 
+  const pass = {
+    user: { name },
+    password: { value1 },
+    players: [name],
+  };
+
   function handleClickHost() {
-    const pass = {
-      user: { name },
-      password: { value1 },
-      players: [name],
-    };
     addDoc(collection(db, "passes"), pass).then((ref) => {
       const newPasses = [...passes];
       newPasses.push({
@@ -31,7 +32,8 @@ function Rooms() {
       });
       setPasses(newPasses);
     });
-    navigate("/routes/Host");
+    localStorage.pass = pass;
+    navigate("/routes/Host.jsx");
   }
 
   function handleClickEntrant() {
@@ -41,9 +43,11 @@ function Rooms() {
         updateDoc(doc(db, "passes"), {
           players: arrayUnion(name),
         });
+        navigate("/routes/fight2.jsx");
       }
     }
   }
+
   return (
     <>
       <div>
@@ -69,10 +73,15 @@ function Rooms() {
         <button onClick={handleClickEntrant}>入室</button>
       </div>
       <div>
-        <h4>ルール説明はこちらから：</h4>
+        <button onClick={navigate("./explanation.jsx")}>
+          ルール説明はこちらから
+        </button>
       </div>
     </>
   );
 }
 
 export default Rooms;
+export function passObject() {
+  return;
+}

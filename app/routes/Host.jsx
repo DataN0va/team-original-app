@@ -1,10 +1,10 @@
 import { useNavigate } from "@remix-run/react";
-import { pass } from "./Rooms.jsx";
+import { passObject } from "./Rooms.jsx";
 
 const Host = () => {
   const navigate = useNavigate();
   if (pass.players.length == 2) {
-    navigate("./fight1.jsx");
+    navigate("./fight2.jsx");
   }
   return (
     <>
