@@ -1,7 +1,14 @@
 import React from "react";
 
-const deck = () => {
-  return <div>deck</div>;
+const Deck = () => {
+  return (
+    <div id="cardBox">
+      <div id="card1"></div>
+      <div id="card2"></div>
+      <div id="card3"></div>
+      <div id="card4"></div>
+    </div>
+  );
 };
 
-export default deck;
+export default Deck;
