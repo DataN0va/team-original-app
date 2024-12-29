@@ -1,7 +1,8 @@
 import React from "react";
 
-const Player = () => {
-  return <div>p</div>;
+const Player = (props) => {
+  const { currentAttackCard } = props;
+  return <div>{currentAttackCard.name}</div>;
 };
 
 export default Player;
