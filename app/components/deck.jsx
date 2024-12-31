@@ -6,19 +6,19 @@ const Deck = (props) => {
   const [card2, setCard2] = useState(deckArray[1]);
   const [card3, setCard3] = useState(deckArray[2]);
   const [card4, setCard4] = useState(deckArray[3]);
-  const { setCurrentAttackCard } = props;
+  const { setCurrentP1Card } = props;
   return (
     <div id="cardBox">
-      <button id="card1" onClick={() => setCurrentAttackCard(card1)}>
+      <button id="card1" onClick={() => setCurrentP1Card(card1)}>
         {card1.name}
       </button>
-      <button id="card2" onClick={() => setCurrentAttackCard(card2)}>
+      <button id="card2" onClick={() => setCurrentP1Card(card2)}>
         {card2.name}
       </button>
-      <button id="card3" onClick={() => setCurrentAttackCard(card3)}>
+      <button id="card3" onClick={() => setCurrentP1Card(card3)}>
         {card3.name}
       </button>
-      <button id="card4" onClick={() => setCurrentAttackCard(card4)}>
+      <button id="card4" onClick={() => setCurrentP1Card(card4)}>
         {card4.name}
       </button>
     </div>
