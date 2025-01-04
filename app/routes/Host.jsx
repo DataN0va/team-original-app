@@ -1,11 +1,15 @@
 import { useNavigate } from "@remix-run/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 const Host = () => {
   const [pass, setPass] = useState(JSON.parse(localStorage.pass));
   const navigate = useNavigate();
-  if (pass.players.length == 2) {
-    navigate("./fight2.jsx");
-  }
+
+  useEffect(() => {
+    if (pass.players.length == 2) {
+      navigate("./fight2.jsx");
+    }
+  }, [pass.players.length, navigate]);
+
   return (
     <>
       <div>

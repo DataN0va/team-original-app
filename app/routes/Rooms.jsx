@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 import { db } from "../firebase.js";
 import {
@@ -8,6 +8,7 @@ import {
   updateDoc,
   arrayUnion,
   doc,
+  onSnapshot,
 } from "firebase/firestore";
 
 function Rooms() {
@@ -23,17 +24,23 @@ function Rooms() {
     players: [name],
   };
 
-  function handleClickHost() {
-    addDoc(collection(db, "passes"), pass).then((ref) => {
-      const newPasses = [...passes];
-      newPasses.push({
-        id: ref.id,
+  useEffect(() => {
+    const roomlist = onSnapshot(collection(db, "passes"), (snapshot) => {
+      const newPasses = snapshot.docs.map((doc) => ({
+        id: doc.id,
         ...pass,
-      });
+      }));
       setPasses(newPasses);
     });
-    localStorage.pass = pass;
-    navigate("/routes/Host.jsx");
+
+    return () => roomlist();
+  }, []);
+
+  function handleClickHost() {
+    addDoc(collection(db, "passes"), pass).then(() => {
+      navigate("/routes/Host.jsx");
+    });
+    localStorage.pass = JSON.stringify(pass);
   }
 
   function handleClickEntrant() {
