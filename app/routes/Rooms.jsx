@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 import { db } from "../firebase.js";
+import { nameContainer } from "./top.jsx";
 import {
   collection,
   addDoc,
@@ -12,7 +13,7 @@ import {
 } from "firebase/firestore";
 
 function Rooms() {
-  const [name, setName] = useState(JSON.parse(localStorage.nameContainer));
+  const [name, setName] = useState(nameContainer);
   const [value1, setValue1] = useState("");
   const [value2, setValue2] = useState("");
   const [passes, setPasses] = useState([]);
@@ -38,7 +39,7 @@ function Rooms() {
 
   function handleClickHost() {
     addDoc(collection(db, "passes"), pass).then(() => {
-      navigate("/routes/Host.jsx");
+      navigate("/Host");
     });
     localStorage.pass = JSON.stringify(pass);
   }
@@ -80,7 +81,11 @@ function Rooms() {
         <button onClick={handleClickEntrant}>入室</button>
       </div>
       <div>
-        <button onClick={navigate("./explanation.jsx")}>
+        <button
+          onClick={() => {
+            navigate("./explanation.jsx");
+          }}
+        >
           ルール説明はこちらから
         </button>
       </div>
