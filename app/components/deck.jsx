@@ -1,45 +1,81 @@
 import { useState } from "react";
-import deckArray from "./weatherInfo.js";
+import fetchData from "../components/weatherInfo.js";
+import "./buttonDesign.css"; // カスタムCSSを適用する
 
 const Deck = (props) => {
-  const [card1, setCard1] = useState(deckArray[0]);
-  const [card2, setCard2] = useState(deckArray[1]);
-  const [card3, setCard3] = useState(deckArray[2]);
-  const [card4, setCard4] = useState(deckArray[3]);
-  const [card5, setCard5] = useState(deckArray[5]); //デバッグ
-  const [card6, setCard6] = useState(deckArray[6]); //デバッグ
-  const [card7, setCard7] = useState(deckArray[7]); //デバッグ
-  const [card8, setCard8] = useState(deckArray[8]); //デバッグ
+  const [card1, setCard1] = useState(fetchData[0]);
+  const [card2, setCard2] = useState(fetchData[1]);
+  const [card3, setCard3] = useState(fetchData[2]);
+  const [card4, setCard4] = useState(fetchData[3]);
+  const [card5, setCard5] = useState(fetchData[5]); // デバッグ用
+  const [card6, setCard6] = useState(fetchData[6]); // デバッグ用
+  const [card7, setCard7] = useState(fetchData[7]); // デバッグ用
+  const [card8, setCard8] = useState(fetchData[8]); // デバッグ用
   const { setCurrentP1Card, setCurrentP2Card } = props;
+
   return (
     <div id="cardBox">
-      <button id="card1" onClick={() => setCurrentP1Card(card1)}>
-        {card1.name}
-      </button>
-      <button id="card2" onClick={() => setCurrentP1Card(card2)}>
-        {card2.name}
-      </button>
-      <button id="card3" onClick={() => setCurrentP1Card(card3)}>
-        {card3.name}
-      </button>
-      <button id="card4" onClick={() => setCurrentP1Card(card4)}>
-        {card4.name}
-      </button>
+      <div className="card-row">
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP1Card(card1)}
+        >
+          <img src={card1.image} alt={card1.name} />
+          <span>{card1.name}</span>
+        </button>
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP1Card(card2)}
+        >
+          <img src={card2.image} alt={card2.name} />
+          <span>{card2.name}</span>
+        </button>
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP1Card(card3)}
+        >
+          <img src={card3.image} alt={card3.name} />
+          <span>{card3.name}</span>
+        </button>
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP1Card(card4)}
+        >
+          <img src={card4.image} alt={card4.name} />
+          <span>{card4.name}</span>
+        </button>
+      </div>
       <div>デバッグ用P2CardBox</div>
-      {/*ここから*/}
-      <button id="card1" onClick={() => setCurrentP2Card(card5)}>
-        {card5.name}
-      </button>
-      <button id="card2" onClick={() => setCurrentP2Card(card6)}>
-        {card6.name}
-      </button>
-      <button id="card3" onClick={() => setCurrentP2Card(card7)}>
-        {card7.name}
-      </button>
-      <button id="card4" onClick={() => setCurrentP2Card(card8)}>
-        {card8.name}
-      </button>
-      {/*ここまで*/}
+      <div className="card-row">
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP2Card(card5)}
+        >
+          <img src={card5.image} alt={card5.name} />
+          <span>{card5.name}</span>
+        </button>
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP2Card(card6)}
+        >
+          <img src={card6.image} alt={card6.name} />
+          <span>{card6.name}</span>
+        </button>
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP2Card(card7)}
+        >
+          <img src={card7.image} alt={card7.name} />
+          <span>{card7.name}</span>
+        </button>
+        <button
+          className="custom-card-button"
+          onClick={() => setCurrentP2Card(card8)}
+        >
+          <img src={card8.image} alt={card8.name} />
+          <span>{card8.name}</span>
+        </button>
+      </div>
     </div>
   );
 };
