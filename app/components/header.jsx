@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 const Header = (props) => {
   const { nowTurn } = props;
