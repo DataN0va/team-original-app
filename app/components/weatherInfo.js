@@ -58,6 +58,48 @@ const toJapaneseList = {
   GB: "イギリス",
   BD: "バングラデシュ",
 };
+const imageNames = {
+  JP: "flags/flag-japan.png",
+  CA: "flags/flag-canada.png",
+  CO: "flags/flag-colombia.png",
+  IR: "flags/flag-iran.png",
+  KE: "flags/flag-kenya.png",
+  DE: "flags/flag-germany.png",
+  TR: "flags/flag-turkey.png",
+  SE: "flags/flag-sweden.png",
+  SA: "flags/flag-saudi-arabia.png",
+  FR: "flags/flag-france.png",
+  NG: "flags/flag-nigeria.png",
+  MA: "flags/flag-morocco.png",
+  BR: "flags/flag-brazil.png",
+  EG: "flags/flag-egypt.png",
+  IL: "flags/flag-israel.png",
+  AR: "flags/flag-argentina.png",
+  PH: "flags/flag-philippines.png",
+  NZ: "flags/flag-newzealand.png",
+  RU: "flags/flag-russia.png",
+  US: "flags/flag-america.png",
+  ID: "flags/flag-indonesia.png",
+  TH: "flags/flag-thailand.png",
+  AU: "flags/flag-australia.png",
+  PK: "flags/flag-pakistan.png",
+  PL: "flags/flag-poland.png",
+  AE: "flags/flag-arab.png",
+  MX: "flags/flag-mexico.png",
+  ES: "flags/flag-spain.png",
+  CL: "flags/flag-chile.png",
+  CN: "flags/flag-china.png",
+  MY: "flags/flag-malaysia.png",
+  KR: "flags/flag-korea.png",
+  IT: "flags/flag-italy.png",
+  GR: "flags/flag-greece.png",
+  NL: "flags/flag-netherland.png",
+  SG: "flags/flag-singapore.png",
+  EC: "flags/flag-ecuador.png",
+  IN: "flags/flag-india.png",
+  GB: "flags/flag-united-kingdom.png",
+  BD: "flags/flag-bangladesh.png",
+};
 
 const urlHead = `https://api.openweathermap.org/data/2.5/weather?id=`;
 
@@ -73,6 +115,7 @@ const fetchData = async () => {
         deckArray[i].temp = data.main.temp;
         deckArray[i].name = data.sys.country;
         deckArray[i].weather = data.weather[0].main;
+        deckArray[i].img = imageNames[data.sys.country];
       });
   });
   await Promise.all(fetchPromises);
