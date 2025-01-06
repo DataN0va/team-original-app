@@ -26,7 +26,7 @@ function Rooms() {
   };
 
   useEffect(() => {
-    const roomlist = onSnapshot(collection(db, "passes"), (snapshot) => {
+    const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
       const newPasses = snapshot.docs.map((doc) => ({
         id: doc.id,
         ...pass,
@@ -38,17 +38,17 @@ function Rooms() {
   }, []);
 
   function handleClickHost() {
-    addDoc(collection(db, "passes"), pass).then(() => {
+    addDoc(collection(db, "rooms"), pass).then(() => {
       navigate("/Host");
     });
     localStorage.pass = JSON.stringify(pass);
   }
 
   function handleClickEntrant() {
-    getDocs(collection(db, "passes"));
+    getDocs(collection(db, "rooms"));
     for (let i = 0; i < passes.length; i++) {
       if (value2 == passes[i].password) {
-        updateDoc(doc(db, "passes"), {
+        updateDoc(doc(db, "rooms"), {
           players: arrayUnion(name),
         });
         navigate("/routes/fight2.jsx");
@@ -83,7 +83,7 @@ function Rooms() {
       <div>
         <button
           onClick={() => {
-            navigate("./explanation.jsx");
+            navigate("../explanation");
           }}
         >
           ルール説明はこちらから

@@ -1,4 +1,5 @@
 import { useState } from "react";
+
 export default function Fightpage() {
   const nameP1 = "プレイヤー１";
   const nameP2 = "プレイヤー２";
