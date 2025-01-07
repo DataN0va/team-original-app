@@ -1,115 +1,138 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Deck from "../components/deck.jsx";
+import Header from "../components/header.jsx";
+import Player1 from "../components/player1.jsx";
+import Player2 from "../components/player2.jsx";
+import Battle from "../components/battle.jsx";
+import { db } from "../firebase.js";
+import {
+  getDocs,
+  updateDoc,
+  collection,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
 
 export default function Fightpage() {
-  const nameP1 = "プレイヤー１";
-  const nameP2 = "プレイヤー２";
-  const [nowPlayer, setNowPlayer] = useState(true);
-  // const [yourState, setYourState] = useState(true);
+  const [currentP1Card, setCurrentP1Card] = useState({ name: "", temp: 0 });
+  const [currentP2Card, setCurrentP2Card] = useState({ name: "", temp: 0 });
   const [nowTurn, setNowTurn] = useState(0);
-  const [player1HP, setPlayer1HP] = useState(10);
-  const [player2HP, setPlayer2HP] = useState(10);
-  //今後プレイヤーの情報は１つの配列にまとめる
-  const [currentAttackCard, setCurrentAttackCard] = useState(0);
-  const [currentDefenceCard, setCurrentDefenceCard] = useState(0);
+  const [P2HP, setP2HP] = useState(100); //F
+  const [P1HP, setP1HP] = useState(100); //F
+  const [nowP1Attack, setNowP1Attack] = useState(true);
+  const [nowP1Decide, setNowP1Decide] = useState(false); //F
+  const [nowP2Decide, setNowP2Decide] = useState(false); //F
+  const [nowPlayer, setNowPlayer] = useState("プレイヤー１");
+  const [room, setRoom] = useState(JSON.parse(localStorage.pass));
+  const [battlerooms, setBattlerooms] = useState([]);
+  // const [currentDefenceCard, setCurrentDefenceCard] = useState({});
+  useEffect(() => {
+    setNowPlayer("プレイヤー２");
+  }, [setNowP1Decide]);
+  useEffect(() => {
+    setNowPlayer("プレイヤー１");
+  }, [setNowP2Decide]);
+
+  const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
+    const newroom = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...room,
+    }));
+    setBattlerooms(newroom);
+  });
 
   function calculateDamage() {
-    console.log("現在の攻撃カード:", currentAttackCard);
-    console.log("現在の防御カード:", currentDefenceCard);
+    roomlist;
+
+    setNowP2Decide(true);
+    setCurrentP2Card({ name: currentP2Card.name, temp: currentP2Card.temp });
+    getDocs(collection(db, "rooms")).then(() => {
+      const battlesituation = doc(collection(db, "rooms"));
+      for (let i = 0; i < battlerooms.length; ++i) {
+        if (room.password == battlerooms[i].password) {
+          updateDoc(battlesituation, {
+            nowP2Decide: { nowP2Decide },
+            currentP2Card: { currentP2Card },
+          });
+        }
+      }
+    });
+  }
+
+  useEffect(() => {
+    console.log("現在の攻撃カード:", currentP1Card);
+    console.log("現在の防御カード:", currentP2Card);
 
     const calculatedDamage = Math.max(
       0,
-      currentAttackCard - currentDefenceCard
+      currentP1Card.temp - currentP2Card.temp
     );
     console.log("計算されたダメージ:", calculatedDamage);
 
-    if (nowPlayer) {
+    if (nowP1Attack) {
       console.log("プレイヤー1が攻撃中");
-      const newHP = Math.max(0, player2HP - calculatedDamage);
+      const newHP = Math.max(0, P2HP - calculatedDamage);
       console.log("プレイヤー2の新しいHP:", newHP);
-      setPlayer2HP(newHP);
+      setP2HP(newHP);
     } else {
       console.log("プレイヤー2が攻撃中");
-      const newHP = Math.max(0, player1HP - calculatedDamage);
+      const newHP = Math.max(0, P1HP - calculatedDamage);
       console.log("プレイヤー1の新しいHP:", newHP);
-      setPlayer1HP(newHP);
+      setP1HP(newHP);
     }
 
-    setNowPlayer((prev) => !prev);
+    setNowP1Attack((prev) => !prev);
     setNowTurn((prev) => prev + 1);
-  }
+  }, [nowP1Decide, nowP2Decide]);
 
   return (
     <>
-      <header>
-        <button>戻る</button> 経過ターン : {nowTurn} <button>ルール</button>
-      </header>
-      <div>senntou</div>
-      {/*hedderコンポーネントを作った時にはにページを戻るボタン、ターン経過数、ルール説明ボタンを乗せる*/}
-      {/*今後プレイヤーコンポーネントに置き換える*/}
-      <div id="nowAttackerPlayerContainer">
-        <div id="playerName">{nameP1}</div>
-        <div id="HP">HP: {player1HP}</div>
-        <div id="playerACard">{currentAttackCard}</div>
+      <Header nowTurn={nowTurn} />
+      <div style={{ display: "flex" }}>
+        <Player1
+          currentP1Card={currentP1Card}
+          nowP1Attack={nowP1Attack}
+          setNowP1Decide={setNowP1Decide}
+          P1HP={P1HP}
+        />
+        <Battle
+          currentP1Card={currentP1Card}
+          currentP2Card={currentP2Card}
+          nowP1Decide={nowP1Decide}
+          nowP2Decide={nowP2Decide}
+          setP2HP={setP2HP}
+          setP1HP={setP1HP}
+          setNowP1Attack={setNowP1Attack}
+          //setNowP1Decide={setNowP1Decide}
+          //setNowP2Decide={setNowP2Decide}
+          nowP1Attack={nowP1Attack}
+          setNowPlayer={setNowPlayer}
+        />
+        <Player2
+          currentP2Card={currentP2Card}
+          nowP1Attack={nowP1Attack}
+          nowP2Decide={nowP2Decide}
+          P2HP={P2HP}
+          setNowP2Decide={setNowP2Decide}
+        />
+        <button
+          onClick={() => {
+            calculateDamage();
+          }}
+        >
+          確定
+        </button>
       </div>
-      <div id="nowDefenderPlayerContainer">
-        <div id="playerName">{nameP2}</div>
-        <div id="HP">HP: {player2HP}</div>
-        <div id="playerDCard">{currentDefenceCard}</div>
-      </div>
-      <div id="deck">
-        {/*今後デッキコンポーネントに置き換える*/}
-        <div id="Attackdeck">
-          あなたの攻撃カード
-          <button
-            className="cards"
-            id="card1"
-            onClick={() => setCurrentAttackCard(1)}
-          >
-            1
-          </button>
-          <button
-            className="cards"
-            id="card2"
-            onClick={() => setCurrentAttackCard(2)}
-          >
-            2
-          </button>
-          <button
-            className="cards"
-            id="card3"
-            onClick={() => setCurrentAttackCard(3)}
-          >
-            3
-          </button>
-        </div>
-        <div id="defencedeck">
-          あなたの防御カード
-          <button
-            className="cards"
-            id="card1"
-            onClick={() => setCurrentDefenceCard(1)}
-          >
-            1
-          </button>
-          <button
-            className="cards"
-            id="card2"
-            onClick={() => setCurrentDefenceCard(2)}
-          >
-            2
-          </button>
-          <button
-            className="cards"
-            id="card3"
-            onClick={() => setCurrentDefenceCard(3)}
-          >
-            3
-          </button>
-        </div>
-      </div>
-      <button id="Confirmed" onClick={() => calculateDamage()}>
-        確定
+      <Deck
+        setCurrentP1Card={setCurrentP1Card}
+        setCurrentP2Card={setCurrentP2Card}
+      />
+      {/*以降デバッグ用*/}
+      <div>デバッグ</div>
+      <button onClick={() => setNowP1Attack((prevState) => !prevState)}>
+        attakerchange
       </button>
+      <div>今の操作 : {nowPlayer}</div>
     </>
   );
 }
