@@ -12,15 +12,16 @@ const Battle = (props) => {
     setP2HP,
     setP1HP,
     setNowP1Attack,
+    decidedP1Card,
+    setDecidedP1Card,
+    decidedP2Card,
+    setDecidedP2Card,
   } = props;
   const initialCardState = {
     name: "",
     temp: 273.15,
     weather: "",
   };
-
-  const [decidedP1Card, setDecidedP1Card] = useState(initialCardState); //F
-  const [decidedP2Card, setDecidedP2Card] = useState(initialCardState); //F
   function weatherEvent(prevHP, decidedAttackCard, decidedDefenceCard) {
     let defaultDamage = Math.max(0, prevHP - 10);
 
@@ -42,6 +43,7 @@ const Battle = (props) => {
   }
   useEffect(() => {
     setDecidedP1Card(currentP1Card);
+
     setNowPlayer("プレイヤー２");
     if (nowP1Attack !== true) {
       setP1HP((prevHP) => weatherEvent(prevHP, decidedP1Card, decidedP2Card));

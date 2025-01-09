@@ -19,7 +19,7 @@ const Player1 = (props) => {
       <button
         className="decide"
         onClick={() => {
-          setNowP1Decide((prevState) => !prevState);
+          setNowP1Decide(true);
         }}
       >
         決定

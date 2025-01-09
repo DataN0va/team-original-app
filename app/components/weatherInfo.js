@@ -128,4 +128,4 @@ const fetchData = async () => {
   return replacedData;
 };
 console.log(fetchData());
-export default fetchData;
+export default deckArray;

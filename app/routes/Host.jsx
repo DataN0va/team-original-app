@@ -1,15 +1,16 @@
 import { useNavigate } from "@remix-run/react";
 import { useState, useEffect } from "react";
-
+import { doc, onSnapshot } from "firebase/firestore";
+import { db } from "../firebase.js";
 const Host = () => {
-  const [pass, setPass] = useState(JSON.parse(localStorage.pass));
+  const [pass, setPass] = useState(JSON.parse(localStorage.value1));
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (pass.players.length === 2) {
-      navigate("./fight2.jsx");
+  const unsub = onSnapshot(doc(db, "rooms", pass), (doc) => {
+    console.log("Current data: ", doc.data());
+    if (doc.data().players.length === 2) {
+      navigate("../fightP1");
     }
-  }, [pass.players.length, navigate]);
+  });
 
   return (
     <>
