@@ -14,13 +14,26 @@ export default function Top() {
         backgroundRepeat: "no-repeat",
         height: "100vh",
         backgroundImage: `url("/app/components/images/930537.jpg")`,
+        paddingTop: "50px", // 上部に余白を追加
       }}
     >
-      <h1 style={{ fontSize: "3rem", color: "#2c3e50", marginBottom: "20px" }}>
+      <h1
+        style={{
+          fontSize: "3rem",
+          color: "#2c3e50",
+          marginBottom: "20px",
+          marginTop: "80px",
+        }}
+      >
         Climatic Clash
       </h1>
       <h2
-        style={{ fontSize: "1.5rem", color: "#34495e", marginBottom: "40px" }}
+        style={{
+          fontSize: "1.5rem",
+          color: "#34495e",
+          marginBottom: "40px",
+          marginTop: "10px",
+        }}
       >
         名前を入力してゲームを始めましょう！
       </h2>
@@ -57,6 +70,27 @@ export default function Top() {
           ログイン
         </button>
       </div>
+      <footer style={{ marginTop: "20px" }}>
+        <div>
+          <button
+            onClick={() => navigate("/explanation")}
+            style={{
+              padding: "10px 20px",
+              fontSize: "1rem",
+              color: "#fff",
+              backgroundColor: "#2ecc71",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            ルール説明
+          </button>
+        </div>
+        <p style={{ fontSize: "0.8rem", color: "#34495e", marginTop: "10px" }}>
+          Copyright © 2025 Climatic Clash. All rights reserved.
+        </p>
+      </footer>
     </main>
   );
 }

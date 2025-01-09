@@ -5,10 +5,23 @@ const Explanation = () => {
         padding: "20px",
         fontFamily: "Arial, sans-serif",
         lineHeight: "1.6",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        height: "140vh",
+        backgroundImage: `url("/app/components/images/930537.jpg")`,
       }}
     >
-      <h1 style={{ color: "#4CAF50", textAlign: "center" }}>
-        🌍 カードバトルへようこそ！
+      <h1
+        style={{
+          fontSize: "3rem",
+          color: "#2c3e50",
+          marginBottom: "20px",
+          marginTop: "80px",
+          textAlign: "center",
+        }}
+      >
+        Climatic Clashへようこそ！
       </h1>
       <h2 style={{ color: "#FF5722" }}>＜目的・概要＞</h2>
       <p>
