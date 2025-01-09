@@ -14,8 +14,8 @@ import {
 } from "firebase/firestore";
 
 export default function Fightpage() {
-  const [currentP1Card, setCurrentP1Card] = useState({});
-  const [currentP2Card, setCurrentP2Card] = useState({});
+  const [currentP1Card, setCurrentP1Card] = useState({ name: "", temp: 0 });
+  const [currentP2Card, setCurrentP2Card] = useState({ name: "", temp: 0 });
   const [nowTurn, setNowTurn] = useState(0);
   const [P2HP, setP2HP] = useState(100); //F
   const [P1HP, setP1HP] = useState(100); //F
@@ -23,7 +23,7 @@ export default function Fightpage() {
   const [nowP1Decide, setNowP1Decide] = useState(false); //F
   const [nowP2Decide, setNowP2Decide] = useState(false); //F
   const [nowPlayer, setNowPlayer] = useState("プレイヤー１");
-  const [room, setRoom] = useState(JSON.parse(localStorage.pass));
+  const room = JSON.parse(localStorage.pass);
   const [battlerooms, setBattlerooms] = useState([]);
   // const [currentDefenceCard, setCurrentDefenceCard] = useState({});
   useEffect(() => {
@@ -33,16 +33,14 @@ export default function Fightpage() {
     setNowPlayer("プレイヤー１");
   }, [setNowP2Decide]);
 
-  const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
-    const newroom = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...room,
-    }));
-    setBattlerooms(newroom);
-  });
-
   function calculateDamage() {
-    roomlist;
+    const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
+      const newroom = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...room,
+      }));
+      setBattlerooms(newroom);
+    });
 
     setNowP1Decide(true);
     setCurrentP1Card({ name: currentP1Card.name, temp: currentP1Card.temp });

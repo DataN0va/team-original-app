@@ -23,7 +23,7 @@ export default function Fightpage() {
   const [nowP1Decide, setNowP1Decide] = useState(false); //F
   const [nowP2Decide, setNowP2Decide] = useState(false); //F
   const [nowPlayer, setNowPlayer] = useState("プレイヤー１");
-  const [room, setRoom] = useState(JSON.parse(localStorage.pass));
+  const room = JSON.parse(localStorage.pass);
   const [battlerooms, setBattlerooms] = useState([]);
   // const [currentDefenceCard, setCurrentDefenceCard] = useState({});
   useEffect(() => {
@@ -33,16 +33,14 @@ export default function Fightpage() {
     setNowPlayer("プレイヤー１");
   }, [setNowP2Decide]);
 
-  const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
-    const newroom = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...room,
-    }));
-    setBattlerooms(newroom);
-  });
-
   function calculateDamage() {
-    roomlist;
+    const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
+      const newroom = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...room,
+      }));
+      setBattlerooms(newroom);
+    });
 
     setNowP2Decide(true);
     setCurrentP2Card({ name: currentP2Card.name, temp: currentP2Card.temp });
@@ -58,6 +56,10 @@ export default function Fightpage() {
       }
     });
   }
+
+  useEffect(() => {
+    setCurrentP1Card(room);
+  });
 
   useEffect(() => {
     console.log("現在の攻撃カード:", currentP1Card);
