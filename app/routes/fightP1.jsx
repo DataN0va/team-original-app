@@ -25,25 +25,40 @@ export default function Fightpage() {
   const [nowPlayer, setNowPlayer] = useState("プレイヤー１");
   const room = JSON.parse(localStorage.pass);
   const [battlerooms, setBattlerooms] = useState([]);
+  const initialCardState = {
+    name: "",
+    temp: 273.15,
+    weather: "",
+  };
+
+  const [decidedP1Card, setDecidedP1Card] = useState(initialCardState); //F
+  const [decidedP2Card, setDecidedP2Card] = useState(initialCardState); //F
   // const [currentDefenceCard, setCurrentDefenceCard] = useState({});
   useEffect(() => {
-    setNowPlayer("プレイヤー２");
-  }, [setNowP1Decide]);
-  useEffect(() => {
-    setNowPlayer("プレイヤー１");
-  }, [setNowP2Decide]);
+    const unsubscribe = onSnapshot(collection(db, "rooms"), (snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        if (doc.data().password === room.password) {
+          const data = doc.data();
+          if (data.currentP2Card) {
+            setDecidedP2Card(data.currentP2Card);
+          }
+        }
+      });
+    });
 
-  function calculateDamage() {
+    // クリーンアップ
+    return () => unsubscribe();
+  }, [room.password]);
+  useEffect(() => {
     const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
       const newroom = snapshot.docs.map((doc) => ({
         id: doc.id,
-        ...room,
+        ...room, // room を正確に展開
       }));
       setBattlerooms(newroom);
     });
 
-    setNowP1Decide(true);
-    setCurrentP1Card({ name: currentP1Card.name, temp: currentP1Card.temp });
+    setNowP1Decide(false);
     getDocs(collection(db, "rooms")).then(() => {
       const battlesituation = doc(collection(db, "rooms"));
       for (let i = 0; i < battlerooms.length; ++i) {
@@ -55,33 +70,28 @@ export default function Fightpage() {
         }
       }
     });
-  }
-
+  }, [nowP1Decide]);
   useEffect(() => {
-    console.log("現在の攻撃カード:", currentP1Card);
-    console.log("現在の防御カード:", currentP2Card);
-
-    const calculatedDamage = Math.max(
-      0,
-      currentP1Card.temp - currentP2Card.temp
-    );
-    console.log("計算されたダメージ:", calculatedDamage);
-
-    if (nowP1Attack) {
-      console.log("プレイヤー1が攻撃中");
-      const newHP = Math.max(0, P2HP - calculatedDamage);
-      console.log("プレイヤー2の新しいHP:", newHP);
-      setP2HP(newHP);
-    } else {
-      console.log("プレイヤー2が攻撃中");
-      const newHP = Math.max(0, P1HP - calculatedDamage);
-      console.log("プレイヤー1の新しいHP:", newHP);
-      setP1HP(newHP);
-    }
-
-    setNowP1Attack((prev) => !prev);
-    setNowTurn((prev) => prev + 1);
-  }, [nowP1Decide, nowP2Decide]);
+    const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
+      const newroom = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...room,
+      }));
+      setBattlerooms(newroom);
+    });
+    setNowP1Decide(false);
+    getDocs(collection(db, "rooms")).then(() => {
+      const battlesituation = doc(collection(db, "rooms"));
+      for (let i = 0; i < battlerooms.length; ++i) {
+        if (room.password == battlerooms[i].password) {
+          updateDoc(battlesituation, {
+            nowP2Decide: { nowP2Decide },
+            currentP2Card: { currentP2Card },
+          });
+        }
+      }
+    });
+  }, [nowP2Decide]);
 
   return (
     <>
@@ -93,13 +103,6 @@ export default function Fightpage() {
           setNowP1Decide={setNowP1Decide}
           P1HP={P1HP}
         />
-        <button
-          onClick={() => {
-            calculateDamage();
-          }}
-        >
-          確定
-        </button>
         <Battle
           currentP1Card={currentP1Card}
           currentP2Card={currentP2Card}
@@ -112,6 +115,10 @@ export default function Fightpage() {
           //setNowP2Decide={setNowP2Decide}
           nowP1Attack={nowP1Attack}
           setNowPlayer={setNowPlayer}
+          decidedP1Card={decidedP1Card}
+          setDecidedP1Card={setDecidedP1Card}
+          decidedP2Card={decidedP2Card}
+          setDecidedP2Card={setDecidedP2Card}
         />
         <Player2
           currentP2Card={currentP2Card}
@@ -121,10 +128,7 @@ export default function Fightpage() {
           setNowP2Decide={setNowP2Decide}
         />
       </div>
-      <Deck
-        setCurrentP1Card={setCurrentP1Card}
-        setCurrentP2Card={setCurrentP2Card}
-      />
+      <Deck setCurrentP1Card={setCurrentP1Card} />
       {/*以降デバッグ用*/}
       <div>デバッグ</div>
       <button onClick={() => setNowP1Attack((prevState) => !prevState)}>

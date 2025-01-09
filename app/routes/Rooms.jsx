@@ -10,6 +10,7 @@ import {
   arrayUnion,
   doc,
   onSnapshot,
+  setDoc,
 } from "firebase/firestore";
 
 function Rooms() {
@@ -21,7 +22,6 @@ function Rooms() {
 
   const pass = {
     user: { name },
-    password: { value1 },
     players: [name],
   };
 
@@ -38,22 +38,19 @@ function Rooms() {
   }, []);
 
   function handleClickHost() {
-    addDoc(collection(db, "rooms"), pass).then(() => {
+    setDoc(doc(db, "rooms", value1), pass).then(() => {
       navigate("/Host");
     });
-    localStorage.pass = JSON.stringify(pass);
+    localStorage.value1 = JSON.stringify(value1);
   }
 
   function handleClickEntrant() {
-    getDocs(collection(db, "rooms"));
-    for (let i = 0; i < passes.length; i++) {
-      if (value2 === passes[i].password.value1) {
-        updateDoc(doc(db, "rooms"), {
-          players: arrayUnion(name),
-        });
-        navigate("/routes/fight2.jsx");
-      }
-    }
+    updateDoc(doc(db, "rooms", value2), {
+      players: arrayUnion(name),
+    }).then(() => {
+      navigate("/fightP2");
+    });
+    localStorage.pass = JSON.stringify(pass);
   }
 
   return (

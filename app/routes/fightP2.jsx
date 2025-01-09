@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Deck from "../components/deck.jsx";
+import Deckp2 from "../components/deckp2.jsx";
 import Header from "../components/header.jsx";
 import Player1 from "../components/player1.jsx";
 import Player2 from "../components/player2.jsx";
@@ -31,9 +31,6 @@ export default function Fightpage() {
   }, [setNowP1Decide]);
   useEffect(() => {
     setNowPlayer("プレイヤー１");
-  }, [setNowP2Decide]);
-
-  function calculateDamage() {
     const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
       const newroom = snapshot.docs.map((doc) => ({
         id: doc.id,
@@ -55,37 +52,7 @@ export default function Fightpage() {
         }
       }
     });
-  }
-
-  useEffect(() => {
-    setCurrentP1Card(room);
-  });
-
-  useEffect(() => {
-    console.log("現在の攻撃カード:", currentP1Card);
-    console.log("現在の防御カード:", currentP2Card);
-
-    const calculatedDamage = Math.max(
-      0,
-      currentP1Card.temp - currentP2Card.temp
-    );
-    console.log("計算されたダメージ:", calculatedDamage);
-
-    if (nowP1Attack) {
-      console.log("プレイヤー1が攻撃中");
-      const newHP = Math.max(0, P2HP - calculatedDamage);
-      console.log("プレイヤー2の新しいHP:", newHP);
-      setP2HP(newHP);
-    } else {
-      console.log("プレイヤー2が攻撃中");
-      const newHP = Math.max(0, P1HP - calculatedDamage);
-      console.log("プレイヤー1の新しいHP:", newHP);
-      setP1HP(newHP);
-    }
-
-    setNowP1Attack((prev) => !prev);
-    setNowTurn((prev) => prev + 1);
-  }, [nowP1Decide, nowP2Decide]);
+  }, [setNowP2Decide]);
 
   return (
     <>
@@ -117,18 +84,8 @@ export default function Fightpage() {
           P2HP={P2HP}
           setNowP2Decide={setNowP2Decide}
         />
-        <button
-          onClick={() => {
-            calculateDamage();
-          }}
-        >
-          確定
-        </button>
       </div>
-      <Deck
-        setCurrentP1Card={setCurrentP1Card}
-        setCurrentP2Card={setCurrentP2Card}
-      />
+      <Deckp2 setCurrentP2Card={setCurrentP2Card} />
       {/*以降デバッグ用*/}
       <div>デバッグ</div>
       <button onClick={() => setNowP1Attack((prevState) => !prevState)}>
