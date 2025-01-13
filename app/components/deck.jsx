@@ -7,7 +7,8 @@ const Deck = (props) => {
   const [card2, setCard2] = useState(deckArray[1]);
   const [card3, setCard3] = useState(deckArray[2]);
   const [card4, setCard4] = useState(deckArray[3]);
-  const { setCurrentP1Card } = props;
+  const { setCurrentP1Card, setNowP1Decide } = props;
+
   return (
     <div id="cardBox">
       <div className="card-row">
@@ -40,6 +41,14 @@ const Deck = (props) => {
           <span>{card4.name}</span>
         </button>
       </div>
+      <button
+        className="decide"
+        onClick={() => {
+          setNowP1Decide((prevState) => !prevState);
+        }}
+      >
+        決定
+      </button>
     </div>
   );
 };
