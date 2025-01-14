@@ -8,8 +8,10 @@ const Explanation = () => {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        height: "140vh",
+        minHeight: "100vh",
         backgroundImage: `url("/app/components/images/930537.jpg")`,
+        backgroundAttachment: "fixed",
+        position: "relative",
       }}
     >
       <h1
