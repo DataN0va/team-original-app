@@ -11,6 +11,7 @@ const Player2 = (props) => {
 
   return (
     <div
+
       style={{
         display: "flex",
         flexDirection: "column",
@@ -64,6 +65,7 @@ const Player2 = (props) => {
           textAlign: "center",
           width: "100%",
         }}
+        style={{ margin: "10px" }}
       >
         {currentP2Card.name || "選択カード"}
       </div>

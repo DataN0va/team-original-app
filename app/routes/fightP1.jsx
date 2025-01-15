@@ -119,6 +119,7 @@ export default function Fightpage() {
         setNowP1Decide={setNowP1Decide}
       />
       {/*以降デバッグ用*/}
+
       <div>今の操作 : {nowPlayer}</div>
     </main>
   );

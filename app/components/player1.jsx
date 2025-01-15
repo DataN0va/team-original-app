@@ -64,6 +64,7 @@ const Player1 = (props) => {
           textAlign: "center",
           width: "100%",
         }}
+        style={{ margin: "10px" }}
       >
         {currentP1Card.name || "選択カード"}
       </div>
