@@ -14,8 +14,6 @@ import {
 } from "firebase/firestore";
 
 export default function Fightpage() {
-  const [currentP1Card, setCurrentP1Card] = useState({ name: "", temp: 0 });
-  const [currentP2Card, setCurrentP2Card] = useState({ name: "", temp: 0 });
   const [nowTurn, setNowTurn] = useState(0);
   const [P2HP, setP2HP] = useState(100); //F
   const [P1HP, setP1HP] = useState(100); //F
@@ -23,92 +21,72 @@ export default function Fightpage() {
   const [nowP1Decide, setNowP1Decide] = useState(false); //F
   const [nowP2Decide, setNowP2Decide] = useState(false); //F
   const [nowPlayer, setNowPlayer] = useState("プレイヤー１");
-  const room = JSON.parse(localStorage.pass);
-  const [battlerooms, setBattlerooms] = useState([]);
+  const room = JSON.parse(localStorage.value1);
   const initialCardState = {
     name: "",
     temp: 273.15,
     weather: "",
   };
-
+  const [currentP1Card, setCurrentP1Card] = useState(initialCardState);
+  const [currentP2Card, setCurrentP2Card] = useState(initialCardState);
   const [decidedP1Card, setDecidedP1Card] = useState(initialCardState); //F
   const [decidedP2Card, setDecidedP2Card] = useState(initialCardState); //F
   // const [currentDefenceCard, setCurrentDefenceCard] = useState({});
   useEffect(() => {
-    const unsubscribe = onSnapshot(collection(db, "rooms"), (snapshot) => {
-      snapshot.docs.forEach((doc) => {
-        if (doc.data().password === room.password) {
-          const data = doc.data();
-          if (data.currentP2Card) {
-            setDecidedP2Card(data.currentP2Card);
-          }
+    // nowP1Decide が変わるたびに更新処理を実行
+    // ドキュメントのP1Cardフィールドを更新
+    updateDoc(doc(db, "rooms", room), {
+      P1Card: { ...currentP1Card }, // currentP1Cardの内容を展開して保存
+    });
+  }, [nowP1Decide]); // nowP1Decideが更新されるたびに処理を再実行
+
+  useEffect(() => {
+    const unsub = onSnapshot(doc(db, "rooms", room), (doc) => {
+      console.log("Current data: ", doc.data());
+      const newP2Card = doc.data()?.P2Card;
+
+      // ステートが実際に変更される場合のみ更新
+      setDecidedP2Card((prev) => {
+        if (JSON.stringify(prev) !== JSON.stringify(newP2Card)) {
+          return newP2Card;
         }
+        return prev; // 変更がない場合は前の値をそのまま保持
       });
     });
 
-    // クリーンアップ
-    return () => unsubscribe();
-  }, [room.password]);
-  useEffect(() => {
-    const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
-      const newroom = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...room, // room を正確に展開
-      }));
-      setBattlerooms(newroom);
-    });
-
-    setNowP1Decide(false);
-    getDocs(collection(db, "rooms")).then(() => {
-      const battlesituation = doc(collection(db, "rooms"));
-      for (let i = 0; i < battlerooms.length; ++i) {
-        if (room.password == battlerooms[i].password) {
-          updateDoc(battlesituation, {
-            nowP1Decide: { nowP1Decide },
-            currentP1Card: { currentP1Card },
-          });
-        }
-      }
-    });
-  }, [nowP1Decide]);
-  useEffect(() => {
-    const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
-      const newroom = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...room,
-      }));
-      setBattlerooms(newroom);
-    });
-    setNowP1Decide(false);
-    getDocs(collection(db, "rooms")).then(() => {
-      const battlesituation = doc(collection(db, "rooms"));
-      for (let i = 0; i < battlerooms.length; ++i) {
-        if (room.password == battlerooms[i].password) {
-          updateDoc(battlesituation, {
-            nowP2Decide: { nowP2Decide },
-            currentP2Card: { currentP2Card },
-          });
-        }
-      }
-    });
-  }, [nowP2Decide]);
+    // クリーンアップ関数を返すことでリスナーを解除
+    return () => {
+      unsub();
+    };
+  }, [room]);
 
   return (
-    <>
+    <main
+      style={{
+        textAlign: "center",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        height: "100vh",
+        backgroundImage: `url("/app/components/images/930537.jpg")`,
+        paddingTop: "0px", // 上部に余白を追加
+      }}
+    >
       <Header nowTurn={nowTurn} />
       <div
         style={{
           display: "flex",
-          width: "1050px",
-          height: "700px",
-          position: "absolute",
-          left: "10px",
+          justifyContent: "space-between", // 要素を均等に配置
+          alignItems: "center", // 垂直方向に中央揃え
+          padding: "20px", // 外側の余白
+          //backgroundColor: "#ecf0f1", // 背景色
+          borderRadius: "10px", // 角丸
+          //boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 軽い影を追加
         }}
       >
         <Player1
           currentP1Card={currentP1Card}
           nowP1Attack={nowP1Attack}
-          setNowP1Decide={setNowP1Decide}
           P1HP={P1HP}
         />
         <Battle
@@ -119,37 +97,30 @@ export default function Fightpage() {
           setP2HP={setP2HP}
           setP1HP={setP1HP}
           setNowP1Attack={setNowP1Attack}
-          //setNowP1Decide={setNowP1Decide}
-          //setNowP2Decide={setNowP2Decide}
           nowP1Attack={nowP1Attack}
           setNowPlayer={setNowPlayer}
           decidedP1Card={decidedP1Card}
           setDecidedP1Card={setDecidedP1Card}
           decidedP2Card={decidedP2Card}
           setDecidedP2Card={setDecidedP2Card}
+          setNowTurn={setNowTurn}
+          room={room}
         />
         <Player2
           currentP2Card={currentP2Card}
           nowP1Attack={nowP1Attack}
-          nowP2Decide={nowP2Decide}
           P2HP={P2HP}
           setNowP2Decide={setNowP2Decide}
         />
       </div>
-      <Deck setCurrentP1Card={setCurrentP1Card} />
+
+      <Deck
+        setCurrentP1Card={setCurrentP1Card}
+        setNowP1Decide={setNowP1Decide}
+      />
       {/*以降デバッグ用*/}
-      <section
-        style={{
-          position: "absolute",
-          top: "400px",
-        }}
-      >
-        <div>デバッグ</div>
-        <button onClick={() => setNowP1Attack((prevState) => !prevState)}>
-          attakerchange
-        </button>
-        <div>今の操作 : {nowPlayer}</div>
-      </section>
-    </>
+
+      <div>今の操作 : {nowPlayer}</div>
+    </main>
   );
 }

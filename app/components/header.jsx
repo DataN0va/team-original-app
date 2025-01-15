@@ -1,42 +1,20 @@
 import { useState } from "react";
+import "./headerDesign.css"; // ヘッダー専用のCSSを適用
 
 const Header = (props) => {
   const { nowTurn } = props;
+
   return (
-    <div style={{ height: "50px" }}>
-      <button
-        id="return"
-        style={{
-          position: "absolute",
-          left: "100px",
-        }}
-      >
+    <header className="header-container">
+      <button className="header-button" id="return">
         戻る
       </button>
-      <div
-        id="nowTurn"
-        style={{
-          width: "200px",
-          height: "26px",
-          position: "absolute",
-          left: "570px",
-        }}
-      >
-        経過ターン : {nowTurn}
-      </div>
-      <button
-        id="rule"
-        style={{
-          float: "right",
-          position: "absolute",
-          left: "1010px",
-          height: "26px",
-          width: "84px",
-        }}
-      >
+      <div className="header-title"> 　　Climatic Clash</div>
+      <div className="header-turn">経過ターン : {nowTurn}</div>
+      <button className="header-button" id="rule">
         ルール説明
       </button>
-    </div>
+    </header>
   );
 };
 
