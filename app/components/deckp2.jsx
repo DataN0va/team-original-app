@@ -40,15 +40,15 @@ const Deckp2 = (props) => {
           <img src={card8.img} alt={card8.name} />
           <span>{card8.name}</span>
         </button>
-        <button
-          className="decide"
-          onClick={() => {
-            setNowP2Decide((prevState) => !prevState);
-          }}
-        >
-          決定
-        </button>
       </div>
+      <button
+        className="decide"
+        onClick={() => {
+          setNowP2Decide((prevState) => !prevState);
+        }}
+      >
+        決定
+      </button>
     </div>
   );
 };

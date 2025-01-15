@@ -10,15 +10,7 @@ const Deck = (props) => {
   const { setCurrentP1Card, setNowP1Decide } = props;
 
   return (
-    <div
-      id="cardBox"
-      style={{
-        width: "300px",
-        position: "absolute",
-        top: "400px",
-        left: "490px",
-      }}
-    >
+    <div id="cardBox">
       <div className="card-row">
         <button
           className="custom-card-button"

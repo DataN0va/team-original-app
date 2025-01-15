@@ -65,11 +65,21 @@ export default function Fightpage() {
         backgroundRepeat: "no-repeat",
         height: "100vh",
         backgroundImage: `url("/app/components/images/930537.jpg")`,
-        paddingTop: "50px", // 上部に余白を追加
+        paddingTop: "0px", // 上部に余白を追加
       }}
     >
       <Header nowTurn={nowTurn} />
-      <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between", // 要素を均等に配置
+          alignItems: "center", // 垂直方向に中央揃え
+          padding: "20px", // 外側の余白
+          //backgroundColor: "#ecf0f1", // 背景色
+          borderRadius: "10px", // 角丸
+          //boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 軽い影を追加
+        }}
+      >
         <Player1
           currentP1Card={currentP1Card}
           nowP1Attack={nowP1Attack}
