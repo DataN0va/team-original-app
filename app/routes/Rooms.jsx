@@ -23,6 +23,8 @@ function Rooms() {
   const pass = {
     user: { name },
     players: [name],
+    P1Card: { name: "", temp: 273.15, weather: "" },
+    P2Card: { name: "", temp: 273.15, weather: "" },
   };
 
   useEffect(() => {
@@ -50,7 +52,7 @@ function Rooms() {
     }).then(() => {
       navigate("/fightP2");
     });
-    localStorage.pass = JSON.stringify(pass);
+    localStorage.pass = JSON.stringify(value2);
   }
 
   return (

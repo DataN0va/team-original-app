@@ -7,11 +7,10 @@ const Deckp2 = (props) => {
   const [card6, setCard6] = useState(deckArray[6]); // デバッグ用
   const [card7, setCard7] = useState(deckArray[7]); // デバッグ用
   const [card8, setCard8] = useState(deckArray[8]); // デバッグ用
-  const { setCurrentP2Card } = props;
+  const { setCurrentP2Card, setNowP2Decide } = props;
 
   return (
     <div id="cardBox">
-      <div>デバッグ用P2CardBox</div>
       <div className="card-row">
         <button
           className="custom-card-button"
@@ -40,6 +39,14 @@ const Deckp2 = (props) => {
         >
           <img src={card8.img} alt={card8.name} />
           <span>{card8.name}</span>
+        </button>
+        <button
+          className="decide"
+          onClick={() => {
+            setNowP2Decide((prevState) => !prevState);
+          }}
+        >
+          決定
         </button>
       </div>
     </div>

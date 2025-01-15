@@ -1,30 +1,72 @@
 import { useState, useEffect } from "react";
-//ここでは仮のカードとしてdeckArrayから直接カードを入れておく、最終的に消す
+
 const Player2 = (props) => {
   const { currentP2Card, nowP1Attack, setNowP2Decide, P2HP } = props;
-  const [P2Name, setP2Name] = useState("プレイヤー２"); //F
+  const [P2Name, setP2Name] = useState("プレイヤー２");
   const [P2StateText, setP2StateText] = useState("防御");
+
   useEffect(() => {
-    if (nowP1Attack) {
-      setP2StateText("防御");
-    } else {
-      setP2StateText("攻撃");
-    }
+    setP2StateText(nowP1Attack ? "防御" : "攻撃");
   }, [nowP1Attack]);
+
   return (
-    <div className="P2Box">
-      <div className="playerName">P2.name : {P2Name}</div>
-      <div className="AttackOrDefence">{P2StateText}</div>
-      <div className="playerHP">P2.HP : {P2HP}</div>
-      <div className="playerCardName">P2.cardName : {currentP2Card.name}</div>
-      <button
-        className="decide"
-        onClick={() => {
-          setNowP2Decide((prevState) => !prevState);
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        border: "2px solid #3498db",
+        borderRadius: "10px",
+        padding: "20px",
+        backgroundColor: "#ecf0f1",
+        width: "200px",
+        height: "300px",
+      }}
+    >
+      <div
+        style={{
+          fontSize: "1.2rem",
+          color: "#2c3e50",
+          fontWeight: "bold",
+          marginBottom: "15px",
         }}
       >
-        決定
-      </button>
+        {P2Name}
+      </div>
+      <div
+        style={{
+          fontSize: "1rem",
+          color: nowP1Attack ? "#e74c3c" : "#27ae60",
+          fontWeight: "bold",
+          marginBottom: "10px",
+        }}
+      >
+        {P2StateText}
+      </div>
+      <div
+        style={{
+          fontSize: "1rem",
+          color: "#34495e",
+          fontWeight: "bold",
+          marginBottom: "10px",
+        }}
+      >
+        HP: {P2HP}
+      </div>
+      <div
+        style={{
+          fontSize: "1rem",
+          color: "#2c3e50",
+          backgroundColor: "#bdc3c7",
+          padding: "10px",
+          borderRadius: "5px",
+          textAlign: "center",
+          width: "100%",
+        }}
+      >
+        {currentP2Card.name || "選択カード"}
+      </div>
     </div>
   );
 };

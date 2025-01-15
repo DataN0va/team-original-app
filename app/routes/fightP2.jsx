@@ -14,8 +14,6 @@ import {
 } from "firebase/firestore";
 
 export default function Fightpage() {
-  const [currentP1Card, setCurrentP1Card] = useState({ name: "", temp: 0 });
-  const [currentP2Card, setCurrentP2Card] = useState({ name: "", temp: 0 });
   const [nowTurn, setNowTurn] = useState(0);
   const [P2HP, setP2HP] = useState(100); //F
   const [P1HP, setP1HP] = useState(100); //F
@@ -24,44 +22,57 @@ export default function Fightpage() {
   const [nowP2Decide, setNowP2Decide] = useState(false); //F
   const [nowPlayer, setNowPlayer] = useState("プレイヤー１");
   const room = JSON.parse(localStorage.pass);
-  const [battlerooms, setBattlerooms] = useState([]);
+  const initialCardState = {
+    name: "",
+    temp: 273.15,
+    weather: "",
+  };
+  const [currentP1Card, setCurrentP1Card] = useState(initialCardState);
+  const [currentP2Card, setCurrentP2Card] = useState(initialCardState);
+  const [decidedP1Card, setDecidedP1Card] = useState(initialCardState); //F
+  const [decidedP2Card, setDecidedP2Card] = useState(initialCardState); //F
   // const [currentDefenceCard, setCurrentDefenceCard] = useState({});
   useEffect(() => {
-    setNowPlayer("プレイヤー２");
-  }, [setNowP1Decide]);
+    updateDoc(doc(db, "rooms", room), {
+      P2Card: { ...currentP2Card }, // currentP1Cardの内容を展開して保存
+    });
+  }, [nowP2Decide]);
   useEffect(() => {
-    setNowPlayer("プレイヤー１");
-    const roomlist = onSnapshot(collection(db, "rooms"), (snapshot) => {
-      const newroom = snapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...room,
-      }));
-      setBattlerooms(newroom);
-    });
+    const unsub = onSnapshot(doc(db, "rooms", room), (doc) => {
+      console.log("Current data: ", doc.data());
+      const newP1Card = doc.data()?.P1Card;
 
-    setNowP2Decide(true);
-    setCurrentP2Card({ name: currentP2Card.name, temp: currentP2Card.temp });
-    getDocs(collection(db, "rooms")).then(() => {
-      const battlesituation = doc(collection(db, "rooms"));
-      for (let i = 0; i < battlerooms.length; ++i) {
-        if (room.password == battlerooms[i].password) {
-          updateDoc(battlesituation, {
-            nowP2Decide: { nowP2Decide },
-            currentP2Card: { currentP2Card },
-          });
+      // ステートが実際に変更される場合のみ更新
+      setDecidedP1Card((prev) => {
+        if (JSON.stringify(prev) !== JSON.stringify(newP1Card)) {
+          return newP1Card;
         }
-      }
+        return prev; // 変更がない場合は前の値をそのまま保持
+      });
     });
-  }, [setNowP2Decide]);
 
+    // クリーンアップ関数を返すことでリスナーを解除
+    return () => {
+      unsub();
+    };
+  }, [room]);
   return (
-    <>
+    <main
+      style={{
+        textAlign: "center",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
+        height: "100vh",
+        backgroundImage: `url("/app/components/images/930537.jpg")`,
+        paddingTop: "50px", // 上部に余白を追加
+      }}
+    >
       <Header nowTurn={nowTurn} />
       <div style={{ display: "flex" }}>
         <Player1
           currentP1Card={currentP1Card}
           nowP1Attack={nowP1Attack}
-          setNowP1Decide={setNowP1Decide}
           P1HP={P1HP}
         />
         <Battle
@@ -76,22 +87,25 @@ export default function Fightpage() {
           //setNowP2Decide={setNowP2Decide}
           nowP1Attack={nowP1Attack}
           setNowPlayer={setNowPlayer}
+          decidedP1Card={decidedP1Card}
+          setDecidedP1Card={setDecidedP1Card}
+          decidedP2Card={decidedP2Card}
+          setDecidedP2Card={setDecidedP2Card}
+          setNowTurn={setNowTurn}
+          room={room}
         />
         <Player2
           currentP2Card={currentP2Card}
           nowP1Attack={nowP1Attack}
-          nowP2Decide={nowP2Decide}
           P2HP={P2HP}
-          setNowP2Decide={setNowP2Decide}
         />
       </div>
-      <Deckp2 setCurrentP2Card={setCurrentP2Card} />
+      <Deckp2
+        setCurrentP2Card={setCurrentP2Card}
+        setNowP2Decide={setNowP2Decide}
+      />
       {/*以降デバッグ用*/}
-      <div>デバッグ</div>
-      <button onClick={() => setNowP1Attack((prevState) => !prevState)}>
-        attakerchange
-      </button>
       <div>今の操作 : {nowPlayer}</div>
-    </>
+    </main>
   );
 }
