@@ -10,7 +10,16 @@ const Deckp2 = (props) => {
   const { setCurrentP2Card } = props;
 
   return (
-    <div id="cardBox">
+    <div
+      id="cardBox"
+      style={{
+        width: "185px",
+        height: "200px",
+        position: "absolute",
+        left: "940px",
+        margin: "100px",
+      }}
+    >
       <div>デバッグ用P2CardBox</div>
       <div className="card-row">
         <button

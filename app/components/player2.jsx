@@ -12,16 +12,36 @@ const Player2 = (props) => {
     }
   }, [nowP1Attack]);
   return (
-    <div className="P2Box">
-      <div className="playerName">P2.name : {P2Name}</div>
-      <div className="AttackOrDefence">{P2StateText}</div>
-      <div className="playerHP">P2.HP : {P2HP}</div>
-      <div className="playerCardName">P2.cardName : {currentP2Card.name}</div>
+    <div
+      className="P2Box"
+      style={{
+        width: "300px",
+        height: "200px",
+        position: "absolute",
+        left: "800px",
+      }}
+    >
+      <div className="playerName" style={{ margin: "10px", width: "300px" }}>
+        P2.name : {P2Name}
+      </div>
+      <div className="AttackOrDefence" style={{ margin: "10px" }}>
+        {P2StateText}
+      </div>
+      <div className="playerHP" style={{ margin: "10px" }}>
+        P2.HP : {P2HP}
+      </div>
+      <div
+        className="playerCardName"
+        style={{ margin: "10px", width: "300px" }}
+      >
+        P2.cardName : {currentP2Card.name}
+      </div>
       <button
         className="decide"
         onClick={() => {
           setNowP2Decide((prevState) => !prevState);
         }}
+        style={{ margin: "10px" }}
       >
         決定
       </button>

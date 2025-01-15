@@ -66,7 +66,13 @@ const Battle = (props) => {
     }
   }, [nowP2Decide]);
   return (
-    <div>
+    <div
+      style={{
+        width: "200px",
+        position: "absolute",
+        left: "500px",
+      }}
+    >
       <div id="P1Card">
         <div className="cardName">P1.name : {decidedP1Card.name} </div>
         <div className="APIIndex">

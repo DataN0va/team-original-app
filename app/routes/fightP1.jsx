@@ -96,7 +96,15 @@ export default function Fightpage() {
   return (
     <>
       <Header nowTurn={nowTurn} />
-      <div style={{ display: "flex" }}>
+      <div
+        style={{
+          display: "flex",
+          width: "1050px",
+          height: "700px",
+          position: "absolute",
+          left: "10px",
+        }}
+      >
         <Player1
           currentP1Card={currentP1Card}
           nowP1Attack={nowP1Attack}
@@ -130,11 +138,18 @@ export default function Fightpage() {
       </div>
       <Deck setCurrentP1Card={setCurrentP1Card} />
       {/*以降デバッグ用*/}
-      <div>デバッグ</div>
-      <button onClick={() => setNowP1Attack((prevState) => !prevState)}>
-        attakerchange
-      </button>
-      <div>今の操作 : {nowPlayer}</div>
+      <section
+        style={{
+          position: "absolute",
+          top: "400px",
+        }}
+      >
+        <div>デバッグ</div>
+        <button onClick={() => setNowP1Attack((prevState) => !prevState)}>
+          attakerchange
+        </button>
+        <div>今の操作 : {nowPlayer}</div>
+      </section>
     </>
   );
 }
