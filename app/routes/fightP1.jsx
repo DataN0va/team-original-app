@@ -21,6 +21,8 @@ export default function Fightpage() {
   const [nowP1Decide, setNowP1Decide] = useState(false); //F
   const [nowP2Decide, setNowP2Decide] = useState(false); //F
   const [nowPlayer, setNowPlayer] = useState("プレイヤー１");
+  const [gameOver, setGameOver] = useState(false); // ゲーム終了フラグ
+  const [winner, setWinner] = useState(""); // 勝利プレイヤー
   const room = JSON.parse(localStorage.value1);
   const initialCardState = {
     name: "",
@@ -31,34 +33,38 @@ export default function Fightpage() {
   const [currentP2Card, setCurrentP2Card] = useState(initialCardState);
   const [decidedP1Card, setDecidedP1Card] = useState(initialCardState); //F
   const [decidedP2Card, setDecidedP2Card] = useState(initialCardState); //F
-  // const [currentDefenceCard, setCurrentDefenceCard] = useState({});
+
   useEffect(() => {
     // nowP1Decide が変わるたびに更新処理を実行
-    // ドキュメントのP1Cardフィールドを更新
     updateDoc(doc(db, "rooms", room), {
-      P1Card: { ...currentP1Card }, // currentP1Cardの内容を展開して保存
+      P1Card: { ...currentP1Card },
     });
-  }, [nowP1Decide]); // nowP1Decideが更新されるたびに処理を再実行
+  }, [nowP1Decide]);
 
   useEffect(() => {
     const unsub = onSnapshot(doc(db, "rooms", room), (doc) => {
       console.log("Current data: ", doc.data());
       const newP2Card = doc.data()?.P2Card;
-
-      // ステートが実際に変更される場合のみ更新
       setDecidedP2Card((prev) => {
         if (JSON.stringify(prev) !== JSON.stringify(newP2Card)) {
           return newP2Card;
         }
-        return prev; // 変更がない場合は前の値をそのまま保持
+        return prev;
       });
     });
 
-    // クリーンアップ関数を返すことでリスナーを解除
     return () => {
       unsub();
     };
   }, [room]);
+
+  // HPが0になったときの処理
+  useEffect(() => {
+    if (P1HP <= 0 || P2HP <= 0) {
+      setGameOver(true);
+      setWinner(P1HP <= 0 ? "プレイヤー2" : "プレイヤー1");
+    }
+  }, [P1HP, P2HP]);
 
   return (
     <main
@@ -67,59 +73,62 @@ export default function Fightpage() {
         backgroundSize: "cover",
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
-        height: "100vh",
-        backgroundImage: `url("/app/components/images/930537.jpg")`,
-        paddingTop: "0px", // 上部に余白を追加
+        height: "950px",
+        backgroundImage: `url("/images/930537.jpg")`,
+        paddingTop: "0px",
       }}
     >
       <Header nowTurn={nowTurn} />
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between", // 要素を均等に配置
-          alignItems: "center", // 垂直方向に中央揃え
-          padding: "20px", // 外側の余白
-          //backgroundColor: "#ecf0f1", // 背景色
-          borderRadius: "10px", // 角丸
-          //boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)", // 軽い影を追加
-        }}
-      >
-        <Player1
-          currentP1Card={currentP1Card}
-          nowP1Attack={nowP1Attack}
-          P1HP={P1HP}
-        />
-        <Battle
-          currentP1Card={currentP1Card}
-          currentP2Card={currentP2Card}
-          nowP1Decide={nowP1Decide}
-          nowP2Decide={nowP2Decide}
-          setP2HP={setP2HP}
-          setP1HP={setP1HP}
-          setNowP1Attack={setNowP1Attack}
-          nowP1Attack={nowP1Attack}
-          setNowPlayer={setNowPlayer}
-          decidedP1Card={decidedP1Card}
-          setDecidedP1Card={setDecidedP1Card}
-          decidedP2Card={decidedP2Card}
-          setDecidedP2Card={setDecidedP2Card}
-          setNowTurn={setNowTurn}
-          room={room}
-        />
-        <Player2
-          currentP2Card={currentP2Card}
-          nowP1Attack={nowP1Attack}
-          P2HP={P2HP}
-          setNowP2Decide={setNowP2Decide}
-        />
-      </div>
+      {!gameOver ? (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "20px",
+          }}
+        >
+          <Player1
+            currentP1Card={currentP1Card}
+            nowP1Attack={nowP1Attack}
+            P1HP={P1HP}
+          />
+          <Battle
+            currentP1Card={currentP1Card}
+            currentP2Card={currentP2Card}
+            nowP1Decide={nowP1Decide}
+            nowP2Decide={nowP2Decide}
+            setP2HP={setP2HP}
+            setP1HP={setP1HP}
+            setNowP1Attack={setNowP1Attack}
+            nowP1Attack={nowP1Attack}
+            setNowPlayer={setNowPlayer}
+            decidedP1Card={decidedP1Card}
+            setDecidedP1Card={setDecidedP1Card}
+            decidedP2Card={decidedP2Card}
+            setDecidedP2Card={setDecidedP2Card}
+            setNowTurn={setNowTurn}
+            room={room}
+          />
+          <Player2
+            currentP2Card={currentP2Card}
+            nowP1Attack={nowP1Attack}
+            P2HP={P2HP}
+            setNowP2Decide={setNowP2Decide}
+          />
+        </div>
+      ) : (
+        <div style={{ marginTop: "50px", color: "#fff", fontSize: "2rem" }}>
+          {winner}が勝利しました！
+        </div>
+      )}
 
-      <Deck
-        setCurrentP1Card={setCurrentP1Card}
-        setNowP1Decide={setNowP1Decide}
-      />
-      {/*以降デバッグ用*/}
-
+      {!gameOver && (
+        <Deck
+          setCurrentP1Card={setCurrentP1Card}
+          setNowP1Decide={setNowP1Decide}
+        />
+      )}
       <div>今の操作 : {nowPlayer}</div>
     </main>
   );

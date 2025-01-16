@@ -64,7 +64,7 @@ function Rooms() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         height: "100vh",
-        backgroundImage: `url("/app/components/images/930537.jpg")`,
+        backgroundImage: `url("/images/930537.jpg")`,
       }}
     >
       <div style={{ color: "#333", padding: "20px" }}>

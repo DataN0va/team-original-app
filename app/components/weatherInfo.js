@@ -90,7 +90,7 @@ const imageNames = {
   CL: "flags/flag-chile.png",
   CN: "flags/flag-china.png",
   MY: "flags/flag-malaysia.png",
-  KR: "flags/flag-korea.png",
+  KR: "flags/flag-south-korea.png",
   IT: "flags/flag-italy.png",
   GR: "flags/flag-greece.png",
   NL: "flags/flag-netherland.png",

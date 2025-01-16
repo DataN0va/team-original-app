@@ -1,50 +1,47 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import deckArray from "../components/weatherInfo.js";
 import "./buttonDesign.css"; // カスタムCSSを適用する
 
 const Deckp2 = (props) => {
-  const [card5, setCard5] = useState(deckArray[5]); // デバッグ用
-  const [card6, setCard6] = useState(deckArray[6]); // デバッグ用
-  const [card7, setCard7] = useState(deckArray[7]); // デバッグ用
-  const [card8, setCard8] = useState(deckArray[8]); // デバッグ用
   const { setCurrentP2Card, setNowP2Decide } = props;
+
+  // ランダムにカードを選択する関数
+  const getRandomCards = () => {
+    const shuffledDeck = [...deckArray].sort(() => Math.random() - 0.5); // デッキをシャッフル
+    return shuffledDeck.slice(0, 4); // 最初の4枚を選択
+  };
+
+  const [cards, setCards] = useState([]);
+
+  // 初期化時にランダムなカードを設定
+  useEffect(() => {
+    setCards(getRandomCards());
+  }, []);
+
+  // カードの再抽選関数
+  const redrawCards = () => {
+    setCards(getRandomCards());
+  };
 
   return (
     <div id="cardBox">
       <div className="card-row">
-        <button
-          className="custom-card-button"
-          onClick={() => setCurrentP2Card(card5)}
-        >
-          <img src={card5.img} alt={card5.name} />
-          <span>{card5.name}</span>
-        </button>
-        <button
-          className="custom-card-button"
-          onClick={() => setCurrentP2Card(card6)}
-        >
-          <img src={card6.img} alt={card6.name} />
-          <span>{card6.name}</span>
-        </button>
-        <button
-          className="custom-card-button"
-          onClick={() => setCurrentP2Card(card7)}
-        >
-          <img src={card7.img} alt={card7.name} />
-          <span>{card7.name}</span>
-        </button>
-        <button
-          className="custom-card-button"
-          onClick={() => setCurrentP2Card(card8)}
-        >
-          <img src={card8.img} alt={card8.name} />
-          <span>{card8.name}</span>
-        </button>
+        {cards.map((card, index) => (
+          <button
+            key={index}
+            className="custom-card-button"
+            onClick={() => setCurrentP2Card(card)}
+          >
+            <img src={card.img} alt={card.name} />
+            <span>{card.name}</span>
+          </button>
+        ))}
       </div>
       <button
         className="decide"
         onClick={() => {
-          setNowP2Decide((prevState) => !prevState);
+          setNowP2Decide((prevState) => !prevState); // プレイヤーのターン終了をトグル
+          redrawCards(); // 新しいカードを抽選
         }}
       >
         決定

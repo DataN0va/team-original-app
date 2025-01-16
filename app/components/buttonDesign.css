@@ -1,3 +1,6 @@
+* {
+  margin: 0;
+}
 .custom-card-button {
   display: inline-block;
   text-align: center;
