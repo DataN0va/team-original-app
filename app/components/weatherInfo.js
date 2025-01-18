@@ -1,20 +1,12 @@
 import Deck from "../components/deck.js";
-const apiKey = "f06f726cf5190bcb1df57391ed6fd1d6";
+
+const apiKey = "f06f726cf5190bcb1df57391ed6fd1d6"; // 環境変数で管理推奨
 const cityList = [
-  1850147 /*JP*/, 2988507 /*FRフランス*/, 4138106 /*US*/, 6094817 /*CAカナダ*/,
-  3530597 /*MX*/, 3469058 /*BR*/, 3435910 /*ARアルゼンチン*/,
-  3688689 /*COコロンビア*/, 3871336 /*CLチリ*/, 2643743 /*GBイギリス*/,
-  7290255 /*DEドイツ*/, 3169070 /*ITイタリア*/, 6359304 /*ESスペイン*/,
-  524901 /*RUロシア*/, 2673730 /*SEスウェーデン*/, 756135 /*PLポーランド*/,
-  360630 /*EGエジプト*/, 1816670 /*CN中国*/, 2352778 /*NGナイジェリア*/,
-  184745 /*KEケニア*/, 2538475 /*MAモロッコ*/, 1261481 /*INインド*/,
-  1835848 /*KR韓国*/, 108410 /*SAサウジアラビア*/, 1609350 /*THタイ*/,
-  323786 /*TRトルコ*/, 2172517 /*AUオーストラリア*/,
-  2179537 /*NZニュージーランド*/, 281184 /*ILイスラエル*/, 112931 /*IRイラン*/,
-  292968 /*AEアラブ首長国連邦*/, 1880251 /*SGシンガポール*/,
-  1733046 /*MYマレーシア*/, 1176615 /*PKパキスタン*/, 1701668 /*PHフィリピン*/,
-  1337178 /*BDバングラデシュ*/, 2759794 /*NLオランダ*/, 264371 /*GRギリシャ*/,
-  1642911 /*IDインドネシア*/, 3652462 /*ECエクアドル*/,
+  1850147, 2988507, 4138106, 6094817, 3530597, 3469058, 3435910, 3688689,
+  3871336, 2643743, 7290255, 3169070, 6359304, 524901, 2673730, 756135, 360630,
+  1816670, 2352778, 184745, 2538475, 1261481, 1835848, 108410, 1609350, 323786,
+  2172517, 2179537, 281184, 112931, 292968, 1880251, 1733046, 1176615, 1701668,
+  1337178, 2759794, 264371, 1642911, 3652462,
 ];
 const toJapaneseList = {
   JP: "日本",
@@ -104,28 +96,46 @@ const imageNames = {
 const urlHead = `https://api.openweathermap.org/data/2.5/weather?id=`;
 
 let deckArray = Deck();
-const fetchData = async () => {
-  const fetchPromises = cityList.map((cityId, i) => {
-    const url = urlHead + cityList[i] + `&appid=` + apiKey;
-    return fetch(url)
-      .then((res) => {
-        return res.json();
-      })
-      .then((data) => {
-        deckArray[i].temp = data.main.temp;
-        deckArray[i].name = data.sys.country;
-        deckArray[i].weather = data.weather[0].main;
-        deckArray[i].img = imageNames[data.sys.country];
-      });
-  });
-  await Promise.all(fetchPromises);
-  const replacedData = deckArray.map((item) => ({
-    ...item,
-    name: toJapaneseList[item.name] || item.name, // 対応表にない場合は元の値を使う
-  }));
 
-  console.log(replacedData);
-  return replacedData;
+const fetchData = async () => {
+  try {
+    // APIリクエストをすべて並列で実行
+    const fetchPromises = cityList.map((cityId, i) => {
+      const url = `${urlHead}${cityId}&appid=${apiKey}`;
+      return fetch(url)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Failed to fetch data for city ID: ${cityId}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          // データが取得できた場合
+          deckArray[i] = {
+            temp: data.main?.temp || "N/A",
+            name: data.sys?.country || "Unknown",
+            weather: data.weather?.[0]?.main || "N/A",
+            img: imageNames[data.sys?.country] || "default.png",
+          };
+        })
+        .catch((err) => console.error(err.message));
+    });
+
+    await Promise.all(fetchPromises);
+
+    // 日本語に置き換える処理
+    const replacedData = deckArray.map((item) => ({
+      ...item,
+      name: toJapaneseList[item.name] || item.name, // 対応表にない場合は元の値を使う
+    }));
+
+    console.log(replacedData); // デバッグ用
+    return replacedData;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 };
-console.log(fetchData());
+
+fetchData();
+
 export default deckArray;
