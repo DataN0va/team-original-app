@@ -13,7 +13,7 @@ export default function Top() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         height: "100vh",
-        backgroundImage: `url("/app/components/images/930537.jpg")`,
+        backgroundImage: `url("/images/930537.jpg")`,
         paddingTop: "50px", // 上部に余白を追加
       }}
     >

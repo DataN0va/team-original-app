@@ -12,7 +12,11 @@ import {
   onSnapshot,
   setDoc,
 } from "firebase/firestore";
-
+const initialCardState = {
+  name: "",
+  temp: 273.15,
+  weather: "",
+};
 function Rooms() {
   const [name, setName] = useState(nameContainer);
   const [value1, setValue1] = useState("");
@@ -23,8 +27,9 @@ function Rooms() {
   const pass = {
     user: { name },
     players: [name],
-    P1Card: { name: "", temp: 273.15, weather: "" },
-    P2Card: { name: "", temp: 273.15, weather: "" },
+    P1Card: initialCardState,
+    P2Card: initialCardState,
+    nowTurn: 0,
   };
 
   useEffect(() => {
@@ -52,7 +57,7 @@ function Rooms() {
     }).then(() => {
       navigate("/fightP2");
     });
-    localStorage.pass = JSON.stringify(value2);
+    localStorage.value2 = JSON.stringify(value2);
   }
 
   return (
@@ -64,7 +69,7 @@ function Rooms() {
         backgroundPosition: "center",
         backgroundRepeat: "no-repeat",
         height: "100vh",
-        backgroundImage: `url("/app/components/images/930537.jpg")`,
+        backgroundImage: `url("/images/930537.jpg")`,
       }}
     >
       <div style={{ color: "#333", padding: "20px" }}>

@@ -1,57 +1,78 @@
+/* ベーススタイルのリセット */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* カードスタイル */
 .custom-card-button {
-  display: inline-block;
-  text-align: center;
-  background-color: #f0f0f0;
-  border: 2px solid #ccc;
-  border-radius: 8px;
-  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border: 2px solid #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  width: 120px;
+  height: 160px;
   cursor: pointer;
-  transition: all 0.2s ease;
-  width: 100px;
-  margin: 10px; /* ボタン間の余白 */
-  font-family: "Arial", sans-serif; /* 統一フォント */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin: 15px; /* カード間の余白 */
+  text-align: center;
+  font-family: "Arial", sans-serif;
 }
 
 .custom-card-button img {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%; /* 画像のサイズ調整 */
-  height: auto; /* 比率を保持 */
+  max-width: 80px;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 6px; /* 画像に角丸を追加 */
 }
 
 .custom-card-button span {
-  display: block;
-  margin-top: 5px;
   font-size: 14px;
-  color: #2c3e50; /* 統一テキスト色 */
+  color: #2c3e50;
   font-weight: bold;
+  margin-top: 8px;
+  text-align: center;
 }
 
 .custom-card-button:hover {
-  background-color: #e0e0e0;
-  border-color: #999;
+  transform: translateY(-5px);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  background-color: #f9f9f9;
+  border-color: #bbb;
 }
 
 .custom-card-button:active {
-  background-color: #d0d0d0;
-  transform: scale(0.98);
+  transform: translateY(0);
+  background-color: #eee;
+  border-color: #aaa;
 }
 
+/* 決定ボタン */
 .decide {
   display: inline-block;
   background-color: #3498db;
   color: white;
-  padding: 10px 20px;
+  padding: 12px 24px;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
   margin-top: 20px;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-transform: uppercase;
 }
 
 .decide:hover {
   background-color: #2980b9;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
 }
 
 .decide:active {
@@ -59,16 +80,42 @@
   transform: scale(0.98);
 }
 
+/* カード表示コンテナ */
 #cardBox {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 20px;
+  margin: 30px auto;
+  padding: 10px;
 }
 
+/* カード行のレイアウト */
 .card-row {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 20px;
+}
+
+/* アニメーション付きのカード */
+@keyframes card-fade-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.custom-card-button {
+  animation: card-fade-in 0.5s ease-in-out;
+}
+
+/* 全体の背景スタイル */
+body {
+  font-family: "Arial", sans-serif;
+  background: linear-gradient(to bottom, #f0f8ff, #e6e6fa);
+  min-height: 100vh;
 }

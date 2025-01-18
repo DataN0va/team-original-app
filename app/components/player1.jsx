@@ -1,4 +1,47 @@
 import { useState, useEffect } from "react";
+// 国コードを日本語に変換するマッピング
+const toJapaneseList = {
+  JP: "日本",
+  CA: "カナダ",
+  CO: "コロンビア",
+  IR: "イラン",
+  KE: "ケニア",
+  DE: "ドイツ",
+  TR: "トルコ",
+  SE: "スウェーデン",
+  SA: "サウジアラビア",
+  FR: "フランス",
+  NG: "ナイジェリア",
+  MA: "モロッコ",
+  BR: "ブラジル",
+  EG: "エジプト",
+  IL: "イスラエル",
+  AR: "アルゼンチン",
+  PH: "フィリピン",
+  NZ: "ニュージーランド",
+  RU: "ロシア",
+  US: "アメリカ",
+  ID: "インドネシア",
+  TH: "タイ",
+  AU: "オーストラリア",
+  PK: "パキスタン",
+  PL: "ポーランド",
+  AE: "アラブ首長国連邦",
+  MX: "メキシコ",
+  ES: "スペイン",
+  CL: "チリ",
+  CN: "中国",
+  MY: "マレーシア",
+  KR: "韓国",
+  IT: "イタリア",
+  GR: "ギリシャ",
+  NL: "オランダ",
+  SG: "シンガポール",
+  EC: "エクアドル",
+  IN: "インド",
+  GB: "イギリス",
+  BD: "バングラデシュ",
+};
 
 const Player1 = (props) => {
   const { currentP1Card, nowP1Attack, setNowP1Decide, P1HP } = props;
@@ -8,7 +51,10 @@ const Player1 = (props) => {
   useEffect(() => {
     setP1StateText(nowP1Attack ? "攻撃" : "防御");
   }, [nowP1Attack]);
-
+  // 国名を日本語に変換する関数
+  const getJapaneseName = (countryCode) => {
+    return toJapaneseList[countryCode] || countryCode; // 対応表にない場合はそのまま表示
+  };
   return (
     <div
       style={{
@@ -64,9 +110,10 @@ const Player1 = (props) => {
           textAlign: "center",
           width: "100%",
         }}
-        style={{ margin: "10px" }}
       >
-        {currentP1Card.name || "選択カード"}
+        {currentP1Card.name
+          ? getJapaneseName(currentP1Card.name)
+          : "選択カード"}
       </div>
     </div>
   );

@@ -21,7 +21,7 @@ const Host = () => {
           alignItems: "center",
           height: "100vh",
           margin: "0",
-          backgroundImage: `url('/app/components/images/930537.jpg')`,
+          backgroundImage: `url('images/930537.jpg')`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           color: "white",
