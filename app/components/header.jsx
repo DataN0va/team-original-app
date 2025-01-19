@@ -11,7 +11,8 @@ const Header = (props) => {
         className="header-button"
         id="return"
         onClick={() => {
-          navigate("/rooms");
+          localStorage.clear();
+          navigate("/");
         }}
       >
         戻る
