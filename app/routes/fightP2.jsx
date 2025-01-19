@@ -142,19 +142,7 @@ export default function Fightpage() {
     >
       <Header nowTurn={nowTurn} />
       {!gameOver ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "20px",
-          }}
-        >
-          <Player1
-            currentP1Card={currentP1Card}
-            nowP1Attack={nowP1Attack}
-            P1HP={P1HP}
-          />
+        <>
           <Battle
             currentP1Card={currentP1Card}
             currentP2Card={currentP2Card}
@@ -172,12 +160,28 @@ export default function Fightpage() {
             setNowTurn={setNowTurn}
             room={room}
           />
-          <Player2
-            currentP2Card={currentP2Card}
-            nowP1Attack={nowP1Attack}
-            P2HP={P2HP}
-          />
-        </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "20px",
+              flexWrap: "wrap",
+            }}
+          >
+            <Player1
+              currentP1Card={currentP1Card}
+              nowP1Attack={nowP1Attack}
+              P1HP={P1HP}
+            />
+
+            <Player2
+              currentP2Card={currentP2Card}
+              nowP1Attack={nowP1Attack}
+              P2HP={P2HP}
+            />
+          </div>
+        </>
       ) : (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
           <div

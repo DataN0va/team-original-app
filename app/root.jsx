@@ -15,7 +15,7 @@ export function Layout({ children }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body style={{ height: "100vh" }}>
         {children}
         <ScrollRestoration />
         <Scripts />

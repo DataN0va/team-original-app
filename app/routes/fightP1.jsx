@@ -194,7 +194,6 @@ export default function Fightpage() {
               currentP2Card={currentP2Card}
               nowP1Attack={nowP1Attack}
               P2HP={P2HP}
-              setNowP2Decide={setNowP2Decide}
             />
           </div>
         </>
