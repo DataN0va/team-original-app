@@ -140,10 +140,10 @@ const Battle = (props) => {
             P1Card: { ...initialCardState },
             P2Card: { ...initialCardState },
           });
-        }, 500);
+        }, 1000);
 
         return () => clearTimeout(secondDelay);
-      }, 500);
+      }, 1000);
 
       return () => clearTimeout(firstDelay);
     }
@@ -167,10 +167,10 @@ const Battle = (props) => {
             P1Card: { ...initialCardState },
             P2Card: { ...initialCardState },
           });
-        }, 500);
+        }, 1000);
 
         return () => clearTimeout(secondDelay);
-      }, 500);
+      }, 1000);
 
       return () => clearTimeout(firstDelay);
     }
