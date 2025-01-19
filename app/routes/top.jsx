@@ -17,16 +17,11 @@ export default function Top() {
         paddingTop: "50px", // 上部に余白を追加
       }}
     >
-      <h1
-        style={{
-          fontSize: "3rem",
-          color: "#2c3e50",
-          marginBottom: "20px",
-          marginTop: "80px",
-        }}
-      >
-        Climatic Clash
-      </h1>
+      <img
+        src="public\images\DALL·E 2025-01-19 22.58.53 - A simple, clean, and horizontally elongated game title design for 'Climatic Clash.' The design should feature a bright yellow base color with subtle t.png"
+        alt=""
+        style={{ width: "375px" }}
+      />
       <h2
         style={{
           fontSize: "1.5rem",
