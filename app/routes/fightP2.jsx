@@ -4,6 +4,7 @@ import Header from "../components/header.jsx";
 import Player1 from "../components/player1.jsx";
 import Player2 from "../components/player2.jsx";
 import Battle from "../components/battle.jsx";
+import "../components/mergin0.css";
 import { db } from "../firebase.js";
 import { useNavigate } from "@remix-run/react";
 import { updateDoc, doc, deleteDoc, onSnapshot } from "firebase/firestore";

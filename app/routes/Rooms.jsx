@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "@remix-run/react";
 import { db } from "../firebase.js";
 import { nameContainer } from "./top.jsx";
+import "../components/mergin0.css";
 import {
   collection,
   addDoc,

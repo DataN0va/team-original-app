@@ -1,3 +1,4 @@
+import "../components/mergin0.css";
 const toJapaneseList = {
   JP: "日本",
   CA: "カナダ",

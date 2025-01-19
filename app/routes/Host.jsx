@@ -2,6 +2,7 @@ import { useNavigate } from "@remix-run/react";
 import { useState, useEffect } from "react";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "../firebase.js";
+import "../components/mergin0.css";
 const Host = () => {
   const [pass, setPass] = useState(JSON.parse(localStorage.value1));
   const navigate = useNavigate();
