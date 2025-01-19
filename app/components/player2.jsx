@@ -69,7 +69,7 @@ const Player2 = (props) => {
         borderRadius: "10px",
         padding: "20px",
         backgroundColor: "#ecf0f1",
-        width: "200px",
+        width: "45%",
         height: "300px",
       }}
     >

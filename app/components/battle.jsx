@@ -180,34 +180,40 @@ const Battle = (props) => {
 
   return (
     <div className="battle-container">
-      <div className="card">
-        <h3>プレイヤー1のカード</h3>
-        {decidedP1Card.name && (
-          <img src={getFlagUrl(decidedP1Card.name)} alt={decidedP1Card.name} />
-        )}
-        <p>{getJapaneseName(decidedP1Card.name) || "未選択"}</p>
-        <p>{getJapaneseWeather(decidedP1Card.weather) || ""}</p>
-        <p>
-          {decidedP1Card.temp
-            ? `${(decidedP1Card.temp - 273.15).toFixed(1)} °C`
-            : ""}
-        </p>
-      </div>
-
       <div className="attacker-indicator">攻撃: {attackerOrDefender()}</div>
-
-      <div className="card">
-        <h3>プレイヤー2のカード</h3>
-        {decidedP2Card.name && (
-          <img src={getFlagUrl(decidedP2Card.name)} alt={decidedP2Card.name} />
-        )}
-        <p>{getJapaneseName(decidedP2Card.name) || "未選択"}</p>
-        <p>{getJapaneseWeather(decidedP2Card.weather) || ""}</p>
-        <p>
-          {decidedP2Card.temp
-            ? `${(decidedP2Card.temp - 273.15).toFixed(1)} °C`
-            : ""}
-        </p>
+      <div className="card-container">
+        <div className="card">
+          <h3>プレイヤー1のカード</h3>
+          {decidedP1Card.name && (
+            <img
+              src={getFlagUrl(decidedP1Card.name)}
+              alt={decidedP1Card.name}
+            />
+          )}
+          <p>{getJapaneseName(decidedP1Card.name) || "未選択"}</p>
+          <p>{getJapaneseWeather(decidedP1Card.weather) || ""}</p>
+          <p>
+            {decidedP1Card.temp
+              ? `${(decidedP1Card.temp - 273.15).toFixed(1)} °C`
+              : ""}
+          </p>
+        </div>
+        <div className="card">
+          <h3>プレイヤー2のカード</h3>
+          {decidedP2Card.name && (
+            <img
+              src={getFlagUrl(decidedP2Card.name)}
+              alt={decidedP2Card.name}
+            />
+          )}
+          <p>{getJapaneseName(decidedP2Card.name) || "未選択"}</p>
+          <p>{getJapaneseWeather(decidedP2Card.weather) || ""}</p>
+          <p>
+            {decidedP2Card.temp
+              ? `${(decidedP2Card.temp - 273.15).toFixed(1)} °C`
+              : ""}
+          </p>
+        </div>
       </div>
     </div>
   );

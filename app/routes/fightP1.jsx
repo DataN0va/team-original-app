@@ -149,27 +149,15 @@ export default function Fightpage() {
         textAlign: "center",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        height: "950px",
+        backgroundRepeat: "repeat-y",
+        flexWrap: "wrap",
         backgroundImage: `url("/images/930537.jpg")`,
         paddingTop: "0px",
       }}
     >
       <Header nowTurn={nowTurn} />
       {!gameOver ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            padding: "20px",
-          }}
-        >
-          <Player1
-            currentP1Card={currentP1Card}
-            nowP1Attack={nowP1Attack}
-            P1HP={P1HP}
-          />
+        <>
           <Battle
             currentP1Card={currentP1Card}
             currentP2Card={currentP2Card}
@@ -187,13 +175,29 @@ export default function Fightpage() {
             setNowTurn={setNowTurn}
             room={room}
           />
-          <Player2
-            currentP2Card={currentP2Card}
-            nowP1Attack={nowP1Attack}
-            P2HP={P2HP}
-            setNowP2Decide={setNowP2Decide}
-          />
-        </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              padding: "20px",
+              flexWrap: "wrap",
+            }}
+          >
+            <Player1
+              currentP1Card={currentP1Card}
+              nowP1Attack={nowP1Attack}
+              P1HP={P1HP}
+            />
+
+            <Player2
+              currentP2Card={currentP2Card}
+              nowP1Attack={nowP1Attack}
+              P2HP={P2HP}
+              setNowP2Decide={setNowP2Decide}
+            />
+          </div>
+        </>
       ) : (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
           <div
@@ -236,7 +240,6 @@ export default function Fightpage() {
           nowPlayer={nowPlayer}
         />
       )}
-      <div>今の操作 : {nowPlayer}</div>
     </main>
   );
 }

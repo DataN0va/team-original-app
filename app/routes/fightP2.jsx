@@ -135,8 +135,7 @@ export default function Fightpage() {
         textAlign: "center",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundRepeat: "no-repeat",
-        height: "950px",
+        backgroundRepeat: "repeat-y",
         backgroundImage: `url("/images/930537.jpg")`,
         paddingTop: "0px",
       }}
@@ -221,7 +220,6 @@ export default function Fightpage() {
           nowPlayer={nowPlayer}
         />
       )}
-      <div>今の操作 : {nowPlayer}</div>
     </main>
   );
 }
