@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { db } from "../firebase.js";
 import { updateDoc, doc } from "firebase/firestore";
 import "./Battle.css";
-import "./mergin0.css";
 // 国コードを日本語に変換するマッピング
 const toJapaneseList = {
   JP: "日本",
