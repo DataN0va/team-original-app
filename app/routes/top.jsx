@@ -1,6 +1,6 @@
 import { useNavigate } from "@remix-run/react";
 import { useState } from "react";
-import "../mergin0.css";
+import "../cpmponents/mergin0.css";
 export default function Top() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
