@@ -18,7 +18,7 @@ export default function Top() {
       }}
     >
       <img
-        src="public\images\DALL·E 2025-01-19 22.58.53 - A simple, clean, and horizontally elongated game title design for 'Climatic Clash.' The design should feature a bright yellow base color with subtle t.png"
+        src="\images\DALL·E 2025-01-19 22.58.53 - A simple, clean, and horizontally elongated game title design for 'Climatic Clash.' The design should feature a bright yellow base color with subtle t.png"
         alt=""
         style={{ width: "375px" }}
       />
